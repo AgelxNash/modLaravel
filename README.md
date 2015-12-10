@@ -39,6 +39,10 @@ Attention
 ======
 Do not get carried away with this garbage. It is absolutely safe and can lead to cracking of your site.
 
+Why You Need
+======
+For example, you have a slider. And you want to insert it in any place
+
 See
 ======
  - [https://github.com/modxcms/evolution](https://github.com/modxcms/evolution)

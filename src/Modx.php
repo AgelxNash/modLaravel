@@ -1,5 +1,8 @@
 <?php namespace AgelxNash\modLaravel;
 
+use AgelxNash\modLaravel\Interfaces\Snippet;
+use ReflectionClass;
+
 class Modx{
 	public function mergeSnippets($content){
 		if(strpos($content,'[[')===false) return $content;
@@ -131,7 +134,6 @@ class Modx{
 
 	public function runSnippet($name, $params){
 		$template = config("modx.snippets.{$name}");
-
 		switch (true) {
 			// closure template found
 			case is_callable($template):
@@ -140,8 +142,8 @@ class Modx{
 
 			// filter template found
 			case class_exists($template):
-				return new $template($params);
-
+				$rc = new ReflectionClass($template);
+				return $rc->implementsInterface(Snippet::class) ?  (new $template)->run($params) : '';
 			default:
 				// template not found
 				return '';

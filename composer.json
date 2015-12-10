@@ -1,0 +1,28 @@
+{
+    "name": "agelxnash/modLaravel",
+    "description": "Launch snippets from content (by CMS MODX Evolution)",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Agel_Nash",
+            "email": "agel_nash@xaker.ru"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "AgelxNash\\modLaravel\\": "src/"
+        }
+    },
+	"support": {
+        "issues": "https://github.com/AgelxNash/modLaravel/issues"
+    },
+    "keywords": [
+        "laravel",
+        "modx",
+        "modx evolution",
+        "snippets"
+    ]
+}

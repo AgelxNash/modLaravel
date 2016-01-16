@@ -7,7 +7,7 @@ class Modx{
 	public function mergeSnippets($content){
 		if(strpos($content,'[[')===false) return $content;
 		$matches = $this->getTagsFromContent($content,'[[',']]');
-		if(!$matches) return $content;
+		if(empty($matches)) return $content;
 		$i= 0;
 		$replace= array ();
 		foreach($matches['1'] as $value){
@@ -20,6 +20,7 @@ class Modx{
 	}
 
 	public function evalSnippet($call){
+		$pos = $snip = array();
 		$spacer = md5('dummy');
 		if(strpos($call,']]>')!==false)
 			$call = str_replace(']]>', "]{$spacer}]>",$call);
@@ -70,22 +71,19 @@ class Modx{
 				$bt = $_tmp;
 				$char = substr($_tmp,0,1);
 				$_tmp = substr($_tmp,1);
-				$doParse = false;
-
+				
 				if($char==='=')
 				{
 					$_tmp = trim($_tmp);
 					$nextchar = substr($_tmp,0,1);
 					if(in_array($nextchar, array('"', "'", '`')))
 					{
-						list($null, $value, $_tmp) = array_pad(explode($nextchar, $_tmp, 3), 3, null);
-						if($nextchar !== "'") $doParse = true;
+						list(, $value, $_tmp) = array_pad(explode($nextchar, $_tmp, 3), 3, null);
 					}
 					elseif(strpos($_tmp,'&')!==false)
 					{
 						list($value, $_tmp) = explode('&', $_tmp, 2);
 						$value = trim($value);
-						$doParse = true;
 					}
 					else
 					{
@@ -103,14 +101,6 @@ class Modx{
 				{
 					if(strpos($key,'amp;')!==false) $key = str_replace('amp;', '', $key);
 					$key=trim($key);
-					/*if($doParse)
-					{
-						if(strpos($value,'[*')!==false) $value = $this->mergeDocumentContent($value);
-						if(strpos($value,'[(')!==false) $value = $this->mergeSettingsContent($value);
-						if(strpos($value,'{{')!==false) $value = $this->mergeChunkContent($value);
-						if(strpos($value,'[[')!==false) $value = $this->evalSnippets($value);
-						if(strpos($value,'[+')!==false) $value = $this->mergePlaceholderContent($value);
-					}*/
 					$params[$key]=$value;
 
 					$key   = '';
@@ -147,7 +137,6 @@ class Modx{
 			default:
 				// template not found
 				return '';
-				break;
 		}
 	}
 	/**
@@ -160,7 +149,8 @@ class Modx{
 		$parameter= array ();
 		if (!empty ($propertyString)) {
 			$tmpParams= explode("&", $propertyString);
-			for ($x= 0; $x < count($tmpParams); $x++) {
+			$count = count($tmpParams);
+			for ($x= 0; $x < $count; $x++) {
 				if (strpos($tmpParams[$x], '=', 0)) {
 					$pTmp= explode("=", $tmpParams[$x]);
 					$pvTmp= explode(";", trim($pTmp[1]));

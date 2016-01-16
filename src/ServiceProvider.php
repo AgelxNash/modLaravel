@@ -17,7 +17,7 @@ class ServiceProvider extends BaseProvider
 			'modx'
 		);
 
-		$this->app['modx'] = $this->app->share(function ($app) {
+		$this->app['modx'] = $this->app->share(function () {
 			return new Modx;
 		});
 	}

@@ -17,7 +17,7 @@ class ServiceProvider extends BaseProvider
 			'modx'
 		);
 
-		$this->app['modx'] = $this->app->share(function () {
+		$this->app->singleton('modx', function () {
 			return new Modx;
 		});
 	}
